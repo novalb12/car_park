@@ -15,11 +15,8 @@ from multiprocessing import Process
 
 
 uid=0
-
-x=0
-uids =[]
- #for diamond entry only
-#device_Tier="DIAMOND"
+track1=0
+track2=0
 
 headers={"Authorization": "Basic YWRtaW5pc3RyYXRvcjptYW5hZ2U="}
 
@@ -29,40 +26,36 @@ url="https://SVQPLT.solaireresort.com:9777/ws/PatronCarWhiteList_VS/1.0/Solaire_
 
 
 def cardSwipe():
-    global x
-    x=input("Swipe Card Track 1: \n")
-    y=input("Swipe Card Track 2: \n")
+    global track1
+    track1=input("Swipe Card Track 1: \n")
+    
+    try:
+        track2=input("Swipe Card Track 2: \n")
+    except:
+        pass
     #print(x)
     #uid_new=uids[0]
-    return x
+    return track1
 
 def filterData():
     global uid
     try:
         cardSwipe()
-        #print(type(x))
-        if x[0]=="%" and x[-1]=="?":
+        if track1[0]=="%" and track1[-1]=="?":
             #print("Track 1")
-            delLast=x[:-1]
-            uid=delLast[1:]
-            #print(uid)
+            uid=track1[1:-1]
             
-        elif x[0]==";"and x[-1]=="?":
+        elif track2[0]==";"and track2[-1]=="?":
             #print("Track 2")
-            delLast=x[:-1]
-            uid2=delLast[1:]
-            uid=0
-            #print(uid2)
-            #print(patronNumberT2)
+            uid2=track2[1:-1]
 #         else:
 #             uid=0
 #             print("Not input from a Reader")
         #return patronNumber
     except:
-        uid=0
         print("Swipe Error")
 #%100017330722?
-#;213241?
+;213241?
     
 def getData():
     filterData()
@@ -71,8 +64,8 @@ def getData():
                  "patronNumber":"300914009"}
         #jsonPretty=json.dumps(data, indent=4, sort_keys=True)
         try:
-            r=requests.post(url,data=payload,headers=headers)
-            body=json.loads(r.text)
+            req=requests.post(url,data=payload,headers=headers)
+            body=json.loads(req.text)
             print(body)
             if body['status'] == "Yes":
                 GPIO.output(18,GPIO.HIGH)
@@ -88,7 +81,7 @@ def getData():
 
             
         
-def buttonku():
+def button():
     while True:
         
         GPIO.wait_for_edge(14, GPIO.RISING)
@@ -108,15 +101,11 @@ def buttonku():
             GPIO.output(15,GPIO.LOW)
 
 if __name__ == "__main__":
-    Process(target=buttonku).start()
-    try:
-        while True:
-            
-            GPIO.output(18,GPIO.LOW)
-            GPIO.output(15,GPIO.LOW)
-            getData()
-    except KeyboardInterrupt:
-        GPIO.cleanup()
+    Process(target=button).start()
+    while True:
+        GPIO.output(18,GPIO.LOW)
+        GPIO.output(15,GPIO.LOW)
+        getData()
 
 
 
