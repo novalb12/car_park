@@ -51,11 +51,11 @@ def filterData():
 #         else:
 #             uid=0
 #             print("Not input from a Reader")
-        #return patronNumber
     except:
         print("Swipe Error")
+        
 #%100017330722?
-;213241?
+#213241?
     
 def getData():
     filterData()
