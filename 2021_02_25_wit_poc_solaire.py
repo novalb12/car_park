@@ -18,7 +18,7 @@ uid=0
 
 x=0
 uids =[]
-deviceId="CASINO_ENTRY_1" #for diamond entry only
+ #for diamond entry only
 #device_Tier="DIAMOND"
 
 headers={"Authorization": "Basic YWRtaW5pc3RyYXRvcjptYW5hZ2U="}
@@ -62,12 +62,12 @@ def filterData():
         uid=0
         print("Swipe Error")
 #%100017330722?
-;213241?
+#;213241?
     
 def getData():
     filterData()
     if uid == "100017330722":
-        payload={"deviceId":deviceId,
+        payload={"deviceId":"CASINO_EXIT_1",
                  "patronNumber":"300914009"}
         #jsonPretty=json.dumps(data, indent=4, sort_keys=True)
         try:
