@@ -59,8 +59,8 @@ def filterData():
     
 def getData():
     filterData()
-    if uid == "100017330722":
-        payload={"deviceId":"CASINO_EXIT_1",
+    if uid == "100017330722": #Gold Member
+        payload={"deviceId":"CASINO_ENTRY_1",
                  "patronNumber":"300914009"}
         #jsonPretty=json.dumps(data, indent=4, sort_keys=True)
         try:
@@ -70,10 +70,40 @@ def getData():
             if body['status'] == "Yes":
                 GPIO.output(18,GPIO.HIGH)
                 GPIO.output(15,GPIO.HIGH)
-                print("patronNumber Track 1")
+                print("Welcome Gold Member")
                 print("Open Gate")
                 sleep(5)
-            
+        except:
+            print("No connection")
+
+	elif uid == "UID DIAMOND": #Diamond Member
+        payload={"deviceId":"CASINO_ENTRY_1",
+                 "patronNumber":"110000002"}
+        try:
+            req=requests.post(url,data=payload,headers=headers)
+            body=json.loads(req.text)
+            print(body)
+            if body['status'] == "Yes":
+                GPIO.output(18,GPIO.HIGH)
+                GPIO.output(15,GPIO.HIGH)
+                print("Welcome Diamond Member")
+                print("Open Gate")
+                sleep(5)
+        except:
+            print("No connection")
+	elif uid == "UID RUBY":  #Ruby Member
+        payload={"deviceId":"CASINO_ENTRY_1",
+                 "patronNumber":"110000003"}
+        try:
+            req=requests.post(url,data=payload,headers=headers)
+            body=json.loads(req.text)
+            print(body)
+            if body['status'] == "Yes":
+                GPIO.output(18,GPIO.HIGH)
+                GPIO.output(15,GPIO.HIGH)
+                print("Welcome Ruby Member")
+                print("Open Gate")
+                sleep(5)
         except:
             print("No connection")
     else:
