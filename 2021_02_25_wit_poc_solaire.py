@@ -28,11 +28,7 @@ url="https://SVQPLT.solaireresort.com:9777/ws/PatronCarWhiteList_VS/1.0/Solaire_
 def cardSwipe():
     global track1
     track1=input("Swipe Card Track 1: \n")
-    
-    try:
-        track2=input("Swipe Card Track 2: \n")
-    except:
-        pass
+    track2=input("Swipe Card Track 2: \n")
     #print(x)
     #uid_new=uids[0]
     return track1
@@ -43,11 +39,14 @@ def filterData():
         cardSwipe()
         if track1[0]=="%" and track1[-1]=="?":
             #print("Track 1")
-            uid=track1[1:-1]
+            #uid=track1[1:-1]
+            uid = ''.join([n for n in track1 if n.isdigit()])
+            print(uid)
             
         elif track2[0]==";"and track2[-1]=="?":
             #print("Track 2")
-            uid2=track2[1:-1]
+            #uid2=track2[1:-1]
+            uid2 = ''.join([n for n in track2 if n.isdigit()])
 #         else:
 #             uid=0
 #             print("Not input from a Reader")
@@ -59,50 +58,52 @@ def filterData():
     
 def getData():
     filterData()
-    if uid == "100017330722": #Gold Member
+    if uid == "100017330722": #silver Member
         payload={"deviceId":"CASINO_ENTRY_1",
                  "patronNumber":"300914009"}
         #jsonPretty=json.dumps(data, indent=4, sort_keys=True)
         try:
-            req=requests.post(url,data=payload,headers=headers)
+            req=requests.post(url,data=payload,headers=headers,verify = False)
             body=json.loads(req.text)
             print(body)
             if body['status'] == "Yes":
-                GPIO.output(18,GPIO.HIGH)
-                GPIO.output(15,GPIO.HIGH)
-                print("Welcome Gold Member")
                 print("Open Gate")
+                print("Tier: SILVER")
+                print("Member: ACTIVE")
                 sleep(5)
         except:
             print("No connection")
 
-	elif uid == "UID DIAMOND": #Diamond Member
+    elif uid == "9990012232433868": #ruby Member
         payload={"deviceId":"CASINO_ENTRY_1",
-                 "patronNumber":"110000002"}
+                 "patronNumber":"300914009"}
         try:
-            req=requests.post(url,data=payload,headers=headers)
+            req=requests.post(url,data=payload,headers=headers,verify = False)
             body=json.loads(req.text)
             print(body)
             if body['status'] == "Yes":
                 GPIO.output(18,GPIO.HIGH)
                 GPIO.output(15,GPIO.HIGH)
-                print("Welcome Diamond Member")
                 print("Open Gate")
+                print("Tier: Ruby")
+                print("Member: ACITVE")
                 sleep(5)
         except:
             print("No connection")
-	elif uid == "UID RUBY":  #Ruby Member
+    elif uid == "60130101060429802301120000000000000000339000000":  #Ruby Member
         payload={"deviceId":"CASINO_ENTRY_1",
-                 "patronNumber":"110000003"}
+                 "patronNumber":"300914009"}
         try:
-            req=requests.post(url,data=payload,headers=headers)
+            req=requests.post(url,data=payload,headers=headers,verify = False)
+            print(req)
             body=json.loads(req.text)
             print(body)
             if body['status'] == "Yes":
-                GPIO.output(18,GPIO.HIGH)
-                GPIO.output(15,GPIO.HIGH)
-                print("Welcome Ruby Member")
-                print("Open Gate")
+                print("Close Gate")
+                print("Tier: DIAMOND")
+                print("Member: INACTIVE")
+                print("Please Contact Customer Support")
+                
                 sleep(5)
         except:
             print("No connection")
@@ -133,6 +134,8 @@ def button():
 if __name__ == "__main__":
     Process(target=button).start()
     while True:
+        if track1=="exit":
+            break
         GPIO.output(18,GPIO.LOW)
         GPIO.output(15,GPIO.LOW)
         getData()
