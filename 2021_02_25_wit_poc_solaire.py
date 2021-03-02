@@ -67,7 +67,7 @@ def getData():
             body=json.loads(req.text)
             print(body)
             if body['status'] == "Yes":
-                print("Open Gate")
+                print("Close Gate, Doesn't Have Access")
                 print("Tier: SILVER")
                 print("Member: ACTIVE")
                 sleep(5)
@@ -76,7 +76,7 @@ def getData():
 
     elif uid == "9990012232433868": #ruby Member
         payload={"deviceId":"CASINO_ENTRY_1",
-                 "patronNumber":"300914009"}
+                 "patronNumber":"32131"}
         try:
             req=requests.post(url,data=payload,headers=headers,verify = False)
             body=json.loads(req.text)
@@ -84,13 +84,13 @@ def getData():
             if body['status'] == "Yes":
                 GPIO.output(18,GPIO.HIGH)
                 GPIO.output(15,GPIO.HIGH)
-                print("Open Gate")
+                print("Open Gate, No Access to Solaire Club Park")
                 print("Tier: Ruby")
                 print("Member: ACITVE")
                 sleep(5)
         except:
             print("No connection")
-    elif uid == "60130101060429802301120000000000000000339000000":  #Ruby Member
+    elif uid == "60130101060429802301120000000000000000339000000":  #Diamond Member
         payload={"deviceId":"CASINO_ENTRY_1",
                  "patronNumber":"300914009"}
         try:
@@ -99,11 +99,11 @@ def getData():
             body=json.loads(req.text)
             print(body)
             if body['status'] == "Yes":
-                print("Close Gate")
+                GPIO.output(18,GPIO.HIGH)
+                GPIO.output(15,GPIO.HIGH)
+                print("Open Gate, Welcome to Solaire Club Parking")
                 print("Tier: DIAMOND")
-                print("Member: INACTIVE")
-                print("Please Contact Customer Support")
-                
+                print("Member: ACTIVE")                
                 sleep(5)
         except:
             print("No connection")
